@@ -3,9 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
+use App\abstracts\UnicodeModel;
 
-class Tag extends Model
+class Tag extends UnicodeModel
 {
     use HasFactory;
     protected $guarded = [];
