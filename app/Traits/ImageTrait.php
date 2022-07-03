@@ -164,4 +164,16 @@ Trait ImageTrait
 
 /*******************************************pattern of updatenow******************/
 
+
+    function dropzoneFunc($img , $path){
+        $imageName = strtotime(now()) . rand(11111, 99999) . '.' . $img->getClientOriginalExtension();
+        if (!is_dir(public_path() . $path)) {
+            mkdir(public_path() . $path , 0777, true);
+        }
+        $original_name = $img->getClientOriginalName();
+
+        $img->move(public_path() . $path, $imageName);
+        return [$imageName , $original_name];
+
+    }
 }
