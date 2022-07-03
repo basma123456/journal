@@ -92,7 +92,7 @@ class NewsController extends Controller
 
 
 
-    //test
+    //  dropzone packge and ckeditor package
 
 // We are submitting are image along with userid and with the help of user id we are updateing our record
     public function fileCreate($id)
