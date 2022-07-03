@@ -90,48 +90,16 @@ class NewsController extends Controller
     }
 
 
-
-
-    //  dropzone packge and ckeditor package
-
-// We are submitting are image along with userid and with the help of user id we are updateing our record
+// We are submitting our image along with userid and with the help of user id we are updateing our record
     public function fileCreate($id)
     {
         return view('admin.imageupload' , compact('id'));
     }
 
     //https://appdividend.com/2022/02/28/laravel-dropzone-image-upload/
-    public function fileStore(Request $request , $id)
-    {
-        $image = $request->file('file');
-        $imageName = $image->getClientOriginalName();
-        $image->move(public_path('images'),$imageName);
-
-        $imageUpload = new ImageUpload();
-        $imageUpload->filename = $imageName;
-        $imageUpload->groups = $id;
-        $imageUpload->save();
-        return response()->json(['success'=>$imageName]);
-    }
-
-    public function fileDestroy(Request $request)
-    {
-        $filename =  $request->get('filename');
-        ImageUpload::where('filename',$filename)->delete();
-        $path=public_path().'/images/'.$filename;
-        if (file_exists($path)) {
-            unlink($path);
-        }
-        return $filename;
-    }
-
-
 
     ######################################################################
 
-
-
-    /*********************test***********************/
     public function dropzoneform()
     {
         return view('dropzone');
@@ -145,7 +113,7 @@ class NewsController extends Controller
             if($request->hasFile('main_image')) {
 
                 $img = $this->saveImage($request->main_image, '/images', '345645');
-//            $photo = $this->saveImage($request->photo , '/assets/images_front/bg_photos' , '1');
+
             }else{
                 $img = null;
             }
@@ -153,9 +121,7 @@ class NewsController extends Controller
             $user->main_title = $request->main_title;
             $user->image_title = $request->image_title;
             $user->journalist_name = $request->journalist_name;
-//            $user->editor = $request->editor;
             $user->editor =  $request->input('summary_ckeditor');
-//                $request->input('summary-ckeditor');
             $user->tags = json_encode(explode(',' , $request->tagsIds) , true);
             $user->category_id = $request->category_id;
             $user->main_image = $img;
@@ -172,7 +138,7 @@ class NewsController extends Controller
 
 
     #####################################################################################
-
+    
     public function storeImage(Request $request)
     {
         if ($request->file('file')) {
@@ -183,27 +149,20 @@ class NewsController extends Controller
 
                 //here we are geeting userid alogn with an image
 
-                $imageName = strtotime(now()) . rand(11111, 99999) . '.' . $img->getClientOriginalExtension();
+                $myImg = $this->dropzoneFunc($img , '/images/');
                 $user_image = new ImageUpload();
-                $original_name = $img->getClientOriginalName();
-                $user_image->filename = $imageName;
+                $user_image->filename = $myImg[0]??null;
                 $user_image->groups = $userid;
                 $user_image->save();
-
-
-                if (!is_dir(public_path() . '/images/')) {
-                    mkdir(public_path() . '/images/', 0777, true);
-                }
-
-                $img->move(public_path() . '/images/', $imageName);
             }
 
             // we are updating our image column with the help of user id
-//            $user_image->where('id', $userid)->update(['image' => $imageName]);
 
-            return response()->json(['status' => "success", 'imgdata' => $original_name, 'userid' => $userid]);
+            return response()->json(['status' => "success", 'imgdata' => $myImg[1]??null, 'userid' => $userid]);
         }
+
     }
+
     ####################################################################################
     public function storeTags(Request $request)
     {
