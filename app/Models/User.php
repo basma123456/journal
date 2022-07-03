@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
+use App\Abstracts\UnicodeAuthenticate;
 
-class User extends Authenticatable
+class User extends UnicodeAuthenticate
 {
     use HasFactory, Notifiable;
     use HasRoles;
