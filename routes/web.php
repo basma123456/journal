@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\NewsController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
@@ -26,6 +27,7 @@ Route::get('/login', function (){
 })->name('login');
 
 Auth::routes();
+Route::post('insert_tags',[App\Http\Controllers\HomeController::class, 'storeTags']);
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
@@ -33,13 +35,35 @@ Route::group(
     [
         'prefix' => LaravelLocalization::setLocale(),
         'middleware' => [ 'localeSessionRedirect', 'localizationRedirect', 'localeViewPath' , 'auth' ]
-    ], function(){ //...
+    ], function() { //...
 
     //===================spatie permitions  routes======================
-    Route::resource('roles',RoleController::class);
-    Route::resource('users',UserController::class);
-    Route::resource('products',ProductController::class);
+    Route::resource('roles', RoleController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('products', ProductController::class);
     //===================end spatie permitions  routes======================
 
+    Route::resource('news', NewsController::class);
+    Route::post('/file-upload', [NewsController::class, 'upload']);
+    Route::post('/upload', [NewsController::class, 'upload2']);
 
-});
+
+    Route::get('uploads/{id}',[NewsController::class, 'fileCreate']);
+    Route::post('image/upload/store/{id}',[NewsController::class, 'fileStore'])->name('image/upload/store');
+    Route::post('image/delete',[NewsController::class, 'fileDestroy']);
+
+
+    /***********************test******************************/
+
+            //Route form displaying our form
+            Route::get('/dropzoneform', [App\Http\Controllers\HomeController::class, 'dropzoneform']);
+
+            //Rout for submitting the form datat
+            Route::post('/storedata', [App\Http\Controllers\HomeController::class, 'storeData'])->name('form.data');
+
+            //Route for submitting dropzone data
+            Route::post('/storeimgae', [App\Http\Controllers\HomeController::class, 'storeImage']);
+    /**********************************test*******************/
+
+
+    });

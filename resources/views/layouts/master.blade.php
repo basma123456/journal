@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
             rel="shortcut icon"
@@ -10,7 +11,11 @@
             type="image/x-icon"
     />
     <title>Sign In | PlainAdmin Demo</title>
+    <script src = "https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js">
+    </script>
 
+
+{{--    <script src="{{url('assets/js/ckeditor.js')}}"></script>--}}
     <!-- ========== All CSS files linkup ========= -->
 
     @if(App::getLocale() == 'ar')
@@ -24,6 +29,40 @@
     <link rel="stylesheet" href="{{url('assets/css/materialdesignicons.min.css')}}" />
     <link rel="stylesheet" href="{{url('assets/css/fullcalendar.css')}}" />
     <link rel="stylesheet" href="{{url('assets/css/main.css')}}" />
+{{--    <link--}}
+{{--            rel="stylesheet"--}}
+{{--            href="https://unpkg.com/dropzone@5/dist/min/dropzone.min.css"--}}
+{{--            type="text/css"--}}
+{{--    />--}}
+
+    <!----------------------dropzone links ---------------------------->
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+{{--    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/bootstrap.min.css') }}">--}}
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/dropzone.css') }}">
+    <script src="{{ asset('assets/js/core/jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/dropzone.js') }}"></script>
+    <style>
+        .dropzoneDragArea {
+            background-color: #fbfdff;
+            border: 1px dashed #c0ccda;
+            border-radius: 6px;
+            padding: 60px;
+            text-align: center;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+        .dropzone{
+            box-shadow: 0px 2px 20px 0px #f2f2f2;
+            border-radius: 10px;
+        }
+
+        /*/////////////////////*/
+
+    </style>
+
+    <!------------------------------end dropzone links ---------------------->
+@yield('style')
 
 </head>
 <body>
@@ -36,6 +75,36 @@
     </div>
     <nav class="sidebar-nav">
         <ul>
+            <!-----------news----------------->
+            <li class="nav-item nav-item-has-children">
+                <a
+                        href="#0"
+                        class="collapsed"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#ddmenu_1"
+                        aria-controls="ddmenu_1"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation"
+                >
+              <span class="icon">
+{{--                  public/assets/images/auth/signin-image.svg--}}
+                  {{--                  <img src="{{asset('assets/images/auth/signin-image.svg')}}" width="22" height="22" />--}}
+                <svg width="22" height="22" viewBox="0 0 22 22">
+                  <path
+                          d="M17.4167 4.58333V6.41667H13.75V4.58333H17.4167ZM8.25 4.58333V10.0833H4.58333V4.58333H8.25ZM17.4167 11.9167V17.4167H13.75V11.9167H17.4167ZM8.25 15.5833V17.4167H4.58333V15.5833H8.25ZM19.25 2.75H11.9167V8.25H19.25V2.75ZM10.0833 2.75H2.75V11.9167H10.0833V2.75ZM19.25 10.0833H11.9167V19.25H19.25V10.0833ZM10.0833 13.75H2.75V19.25H10.0833V13.75Z"
+                  />
+                </svg>
+              </span>
+                    <span class="text">News</span>
+                </a>
+                <ul id="ddmenu_1" class="collapse dropdown-nav">
+                    <li>
+                        <a href="{{url(route('news.index'))}}"> Add a new </a>
+                    </li>
+                </ul>
+            </li>
+            <!--------------end news----------->
+
             <li class="nav-item nav-item-has-children">
                 <a
                         href="#0"
@@ -583,6 +652,7 @@
 </main>
 <!-- ======== main-wrapper end =========== -->
 
+@yield('scripts')
 <!-- ========= All Javascript files linkup ======== -->
 <script src="{{url('assets/js/bootstrap.bundle.min.js')}}"></script>
 <script src="{{url('assets/js/Chart.min.js')}}"></script>
@@ -593,5 +663,7 @@
 <script src="{{url('assets/js/world-merc.js')}}"></script>
 <script src="{{url('assets/js/polyfill.js')}}"></script>
 <script src="{{url('assets/js/main.js')}}"></script>
+<script src="{{url('assets/js/dropzone.min.js')}}"></script>
+
 </body>
 </html>
